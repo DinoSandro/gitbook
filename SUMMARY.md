@@ -1,9 +1,21 @@
 # Table of contents
 
-* [Enumeration](README.md)
-  * [Untitled](enumeration/untitled.md)
+## ✈️ Exposed Services
 
-## Group 1
+* [Page 3](README.md)
 
-* [Page 1](group-1/page-1/README.md)
-  * [Page 2](group-1/page-1/page-2.md)
+## 🕸️ Web
+
+* [Page 2](web/page-2.md)
+
+## 🪟 Windows
+
+* [Page 1](windows/page-1.md)
+
+## 🐧 Linux
+
+* [Page 4](linux/page-4.md)
+
+## 📃 Write Ups
+
+* [CRTP Lab](write-ups/crtp-lab.md)
