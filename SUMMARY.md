@@ -10,7 +10,11 @@
 
 ## 🪟 Windows
 
-* [Page 1](windows/page-1.md)
+* [Active Directory](windows/active-directory/README.md)
+  * [Page 1](windows/active-directory/page-1.md)
+* [Local](windows/local/README.md)
+  * [Page 5](windows/local/page-5.md)
+  * [Page](windows/local/page.md)
 
 ## 🐧 Linux
 
