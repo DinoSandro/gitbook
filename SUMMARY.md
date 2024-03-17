@@ -19,8 +19,9 @@
   * [Exploitation / Abuse](windows/active-directory/exploitation-abuse.md)
   * [Persistence](windows/active-directory/persistence.md)
 * [Local](windows/local/README.md)
-  * [Page 5](windows/local/page-5.md)
-  * [Page](windows/local/page.md)
+  * [Enumeration](windows/local/enumeration.md)
+  * [Privescs](windows/local/privescs/README.md)
+    * [Privileges](windows/local/privescs/privileges.md)
 * [Evasion](windows/evasion.md)
 
 ## 🐧 Linux

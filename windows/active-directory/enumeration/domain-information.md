@@ -26,6 +26,12 @@ Get-Domain -Domain moneycorp.local
 Get-DomainSID
 ```
 
+### Get my SID
+
+```powershell
+whoami /all | Select-String -Pattern "$USER" -Context 2,0
+```
+
 ### _Get domain policy for the current domain_
 
 ```PowerView
@@ -165,3 +171,4 @@ Get-NetUser | select cn
 {% embed url="https://gist.githubusercontent.com/HarmJ0y/184f9822b195c52dd50c379ed3117993/raw/e5e30c942adb2347917563ef0dafa7054882535a/PowerView-3.0-tricks.ps1" %}
 PowerView CheatSheet
 {% endembed %}
+
