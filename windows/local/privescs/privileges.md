@@ -14,3 +14,4 @@ Look for the pid transfer your shell in this process
 migrate $PID
 ```
 
+### s
