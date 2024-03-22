@@ -52,6 +52,12 @@ Get-ModifiableServiceFile -Verbose
 Get-ModifiableService -Verbose
 ```
 
+### Look command history
+
+```powershell
+type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+```
+
 ## References
 
 [enjoiz/Privesc: Windows batch script that finds misconfiguration issues which can lead to privilege escalation. (github.com)](https://github.com/enjoiz/Privesc)

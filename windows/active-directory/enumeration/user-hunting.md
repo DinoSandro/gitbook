@@ -39,3 +39,15 @@ By using Find-PSremotingLocalAdminAccess
 ```powershell
 Find-PSremotingLocalAdminAccess -verbose
 ```
+
+### Enumerate other users trought SMB
+
+```bash
+crackmapexec smb <IP> --users
+```
+
+to obtain password policy
+
+```bash
+crackmapexec smb <IP> --pass-pol
+```
