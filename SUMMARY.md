@@ -1,8 +1,10 @@
 # Table of contents
 
+* [Welcome](README.md)
+
 ## ✈️ Exposed Services
 
-* [Page 3](README.md)
+* [Page 3](<README (1).md>)
 
 ## 🕸️ Web
 
@@ -37,6 +39,7 @@
   * [Enumeration](windows/local/enumeration.md)
   * [Privescs](windows/local/privescs/README.md)
     * [Privileges](windows/local/privescs/privileges.md)
+    * [Groups](windows/local/privescs/groups.md)
 * [Evasion](windows/evasion.md)
 
 ## 🐧 Linux
