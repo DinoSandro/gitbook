@@ -31,7 +31,7 @@
       * [GenericALL](windows/active-directory/exploitation-abuse/dacl/genericall.md)
       * [Delegations](windows/active-directory/exploitation-abuse/dacl/delegations.md)
       * [Trust](windows/active-directory/exploitation-abuse/dacl/trust.md)
-    * [Mimi tools](windows/active-directory/exploitation-abuse/mimi-tools.md)
+    * [Mimi Tools](windows/active-directory/exploitation-abuse/mimi-tools.md)
     * [ADCS](windows/active-directory/exploitation-abuse/adcs.md)
 * [Persistence](windows/active-directory/persistence.md)
   * [Ticket Forging](windows/persistence/ticket-forging.md)

