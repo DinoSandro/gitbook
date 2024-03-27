@@ -14,4 +14,8 @@ Look for the pid transfer your shell in this process
 migrate $PID
 ```
 
-### s
+### SeImpersonatePrivilege
+
+Use printspoofer or potatoes
+
+<figure><img src="../../../.gitbook/assets/Pasted image 20230614152221.png" alt=""><figcaption></figcaption></figure>

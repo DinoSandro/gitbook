@@ -4,7 +4,7 @@
 
 ## ✈️ Exposed Services
 
-* [Page 3](<README (1).md>)
+* [KRB 88](exposed-services/krb-88.md)
 
 ## 🕸️ Web
 
@@ -45,6 +45,9 @@
   * [Privescs](windows/local/privescs/README.md)
     * [Privileges](windows/local/privescs/privileges.md)
     * [Groups](windows/local/privescs/groups.md)
+    * [Weak Registry Permissions](windows/local/privescs/weak-registry-permissions.md)
+    * [Services Misconfiguration](windows/local/privescs/services-misconfiguration.md)
+  * [Download Files](windows/local/download-files.md)
 * [Evasion](windows/evasion.md)
 
 ## 🐧 Linux
