@@ -1,6 +1,6 @@
 # Groups
 
-### **ACCOUNT OPERATORS**
+### **Account Operators**
 
 It can manage and create both administrator and non-administrator users, thus also changing the passwords of other users.
 
@@ -8,7 +8,7 @@ It can manage and create both administrator and non-administrator users, thus al
 net user <USER> NewPassword1234 /domain
 ```
 
-### **BACKUP OPERATORS**
+### **Backup Operators**
 
 to dump ntds.dit we need to be able to back up the ntds.dit file, a file containing all the hashes and information of the domain. Download the following files:
 
@@ -69,6 +69,6 @@ Use IMPACKET's secretdump to dump the hashes and log in with evil-winrm.
 impacket-secretsdump -ntds ntds.dit -system system local
 ```
 
-### **SERVER OPERATOR**
+### **Server Operators**
 
 Can you restart the services and modify their PATH?
