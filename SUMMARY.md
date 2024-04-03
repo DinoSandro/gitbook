@@ -7,9 +7,10 @@
 * [DNS 53](exposed-services/dns-53.md)
 * [KRB 88](exposed-services/krb-88.md)
 * [LDAP](exposed-services/ldap.md)
+* [SMB 139,445](exposed-services/smb-139-445.md)
+* [SNMP 161](exposed-services/snmp-161.md)
 * [MSSQL](exposed-services/mssql.md)
 * [NFS 2049](exposed-services/nfs-2049.md)
-* [SMB 139,445](exposed-services/smb-139-445.md)
 
 ## 🕸️ Web
 
