@@ -37,6 +37,7 @@
       * [GenericALL](windows/active-directory/exploitation-abuse/dacl/genericall.md)
       * [Delegations](windows/active-directory/exploitation-abuse/dacl/delegations.md)
       * [Trust](windows/active-directory/exploitation-abuse/dacl/trust.md)
+      * [gMSA](windows/active-directory/exploitation-abuse/dacl/gmsa.md)
     * [Mimi Tools](windows/active-directory/exploitation-abuse/mimi-tools.md)
     * [ADCS](windows/active-directory/exploitation-abuse/adcs/README.md)
       * [ESC1](windows/active-directory/exploitation-abuse/adcs/esc1.md)
@@ -46,6 +47,9 @@
 * [Persistence](windows/active-directory/persistence.md)
   * [Ticket Forging](windows/persistence/ticket-forging.md)
   * [ACLs](windows/persistence/acls.md)
+  * [Golden gMSA](windows/persistence/golden-gmsa.md)
+  * [Skeleton Key](windows/persistence/skeleton-key.md)
+  * [DSMR](windows/persistence/dsmr.md)
 * [Local](windows/local/README.md)
   * [Enumeration](windows/local/enumeration.md)
   * [Privescs](windows/local/privescs/README.md)
@@ -54,7 +58,8 @@
     * [Weak Registry Permissions](windows/local/privescs/weak-registry-permissions.md)
     * [Services Misconfiguration](windows/local/privescs/services-misconfiguration.md)
   * [Download Files](windows/local/download-files.md)
-* [Evasion](windows/evasion.md)
+* [Evasion](windows/evasion/README.md)
+  * [EDR](windows/evasion/edr.md)
 
 ## 🐧 Linux
 

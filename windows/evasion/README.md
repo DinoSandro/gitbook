@@ -38,7 +38,7 @@ $out = [Console]::Out;$sWriter = New-Object IO.StringWriter;[Console]::SetOut($s
 
 ### Constrained Language
 
-<figure><img src="../.gitbook/assets/Pasted image 20231220160920.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Pasted image 20231220160920.png" alt=""><figcaption></figcaption></figure>
 
 Cannot create type. Only core types are supported in this language mode.
 
@@ -56,7 +56,7 @@ reg query
 HKLM\Software\Policies\Microsoft\Windows\SRPV2 -ComputerName <MACHINE NAME>
 ```
 
-<figure><img src="../.gitbook/assets/Pasted image 20231220161133 (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Pasted image 20231220161133 (1).png" alt=""><figcaption></figcaption></figure>
 
 {% code overflow="wrap" %}
 ```powershell
@@ -64,6 +64,6 @@ Get-AppLockerPolicy -Effective | select -ExpandProperty RuleCollections -Compute
 ```
 {% endcode %}
 
-<figure><img src="../.gitbook/assets/Pasted image 20231220161307.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Pasted image 20231220161307.png" alt=""><figcaption></figcaption></figure>
 
 It say that we can run program inside C:\Program Files folder, so download the script inside it and run it
