@@ -44,6 +44,8 @@
       * [ESC3](windows/active-directory/exploitation-abuse/adcs/esc3.md)
       * [ESC4](windows/active-directory/exploitation-abuse/adcs/esc4.md)
       * [ESC6](windows/active-directory/exploitation-abuse/adcs/esc6.md)
+    * [Shadow Credentials](windows/active-directory/exploitation-abuse/shadow-credentials.md)
+  * [Azure AD Integrations](windows/active-directory/azure-ad-integrations.md)
 * [Persistence](windows/active-directory/persistence.md)
   * [Ticket Forging](windows/persistence/ticket-forging.md)
   * [ACLs](windows/persistence/acls.md)
