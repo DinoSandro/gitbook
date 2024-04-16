@@ -31,6 +31,7 @@
     * [Open other sessions](windows/active-directory/lateral-movement/open-other-sessions.md)
     * [File transfer](windows/active-directory/lateral-movement/file-transfer.md)
   * [Exploitation / Abuse](windows/active-directory/exploitation-abuse.md)
+    * [Kerberoasting](windows/active-directory/exploitation-abuse/kerberoasting.md)
     * [Groups](windows/active-directory/exploitation-abuse/groups.md)
     * [DACL](windows/active-directory/exploitation-abuse/dacl/README.md)
       * [DCSync](windows/active-directory/exploitation-abuse/dacl/dcsync.md)
@@ -61,6 +62,7 @@
     * [Services Misconfiguration](windows/local/privescs/services-misconfiguration.md)
   * [Download Files](windows/local/download-files.md)
 * [Evasion](windows/evasion/README.md)
+  * [Payload Delivery](windows/evasion/payload-delivery.md)
   * [EDR](windows/evasion/edr.md)
 
 ## 🐧 Linux

