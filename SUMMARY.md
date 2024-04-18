@@ -14,7 +14,7 @@
 
 ## 🕸️ Web
 
-* [Page 2](web/page-2.md)
+* [TODO](web/todo.md)
 
 ## 🪟 Windows
 
@@ -46,6 +46,7 @@
       * [ESC4](windows/active-directory/exploitation-abuse/adcs/esc4.md)
       * [ESC6](windows/active-directory/exploitation-abuse/adcs/esc6.md)
     * [Shadow Credentials](windows/active-directory/exploitation-abuse/shadow-credentials.md)
+    * [LAPS](windows/active-directory/exploitation-abuse/laps.md)
   * [Azure AD Integrations](windows/active-directory/azure-ad-integrations.md)
 * [Persistence](windows/active-directory/persistence.md)
   * [Ticket Forging](windows/persistence/ticket-forging.md)
@@ -67,7 +68,7 @@
 
 ## 🐧 Linux
 
-* [Page 4](linux/page-4.md)
+* [TODO](linux/todo.md)
 
 ## 📃 Write Ups
 
