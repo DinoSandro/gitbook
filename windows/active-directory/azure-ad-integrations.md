@@ -26,6 +26,20 @@ Get-DomainUser -Identity "<$User with sync> -Domain <$Domain>
 ```
 {% endcode %}
 
+Using AD-Module
+
+We can find out the machine where Azure AD Connect is installed by looking at the Description of special account whose name begins with MSOL\_.
+
+Using AD-Module:
+
+{% code overflow="wrap" %}
+```powershell
+Get-ADUser -Filter "samAccountName -like 'MSOL_*'" -Server <$Domain> -Properties * | select SamAccountName,Description | fl
+```
+{% endcode %}
+
+<figure><img src="https://github.com/italianpenty/WriteUps/raw/main/.gitbook/assets/immagine%20(31).png" alt=""><figcaption></figcaption></figure>
+
 #### Get credentials and shell
 
 With admin privileges, if if we run adconnect.ps1, we can extract the credentials of the account in clear text

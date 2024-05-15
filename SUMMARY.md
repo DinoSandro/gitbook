@@ -65,6 +65,8 @@
 * [Evasion](windows/evasion/README.md)
   * [Payload Delivery](windows/evasion/payload-delivery.md)
   * [EDR](windows/evasion/edr.md)
+  * [WDAC](windows/evasion/wdac.md)
+* [MSSQL](windows/mssql.md)
 
 ## 🐧 Linux
 

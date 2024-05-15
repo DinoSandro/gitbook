@@ -112,7 +112,7 @@ Find-InterestingDomainAcl -ResolveGUIDs |  ?{$_.IdentityReferenceName -match "<G
 Find-InterestingDomainAcl -ResolveGUIDs
 ```
 
-#### **TRUSTS ENUMERATION**
+### **Trust Enumeration**
 
 ```PowerView
 Get-DomainTrust
@@ -124,7 +124,7 @@ Get-DomainTrust
  Get-DomainTrust | ?{$_.TrustAttributes -eq "FILTER_SIDS"}
 ```
 
-### **FORESTS ENUMERATION**
+### **Forest Enumeration**
 
 ```PowerView
 Get-Forest
@@ -136,15 +136,37 @@ Get-ForestTrust
 
 list only the external trusts int the current forest
 
-```Powerview
-Get-ForestDomain | %{Get-DomainTrust -Domain $_.Name} | ?{$_.TrustAttributes -eq "FILTER_SIDS"}
+{% code overflow="wrap" %}
+```powershell
+Get-ForestDomain -Verbose | Get-DomainTrust | ?{$_.TrustAttributes -eq 'FILTER_SIDS'}
 ```
+{% endcode %}
+
+<figure><img src="../../../.gitbook/assets/immagine (6).png" alt=""><figcaption></figcaption></figure>
+
+IF trust is bidirectional you can enumerate the trust of the other domain
+
+```
+Get-ForestTrust -Forest <$Target Forest>
+```
+
+[![](https://github.com/italianpenty/WriteUps/raw/main/.gitbook/assets/immagine%20\(1\)%20\(1\).png)](https://github.com/italianpenty/WriteUps/blob/main/.gitbook/assets/immagine%20\(1\)%20\(1\).png)
 
 ### **Search SPN Accounts**
 
 ```powerview
 Get-DomainUser -SPN
 ```
+
+#### Over another domain
+
+with AD-Module
+
+{% code overflow="wrap" %}
+```powershell
+Get-ADTrust -Filter 'IntraForest -ne $true' | %{Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName -Server $_.Name}
+```
+{% endcode %}
 
 ### **Delegations**
 
@@ -154,11 +176,25 @@ Get-DomainUser -SPN
 Get-DomainComputer -Unconstrained | select -ExpandProperty name
 ```
 
+With AD-Module
+
+```
+Get-ADComputer -Filter {TrustedForDelegation -eq $True}
+```
+
 #### _Constrained_
 
 ```powerview
 Get-DomainUser -TrustedToAuth
 ```
+
+to another domain with AD-Module:
+
+{% code overflow="wrap" %}
+```powershell
+Get-ADObject -Filter {msDS-AllowedToDelegateTo -ne "$null"} -Properties msDS-AllowedToDelegateTo -Server <$Target>
+```
+{% endcode %}
 
 ### Domain users
 

