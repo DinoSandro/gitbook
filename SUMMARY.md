@@ -82,3 +82,6 @@
 * [Linux Wireless Tools, Drivers, and Stacks](wi-fi/linux-wireless-tools-drivers-and-stacks.md)
 * [Wireshark](wi-fi/wireshark.md)
 * [AirCrack-ng](wi-fi/aircrack-ng.md)
+* [Cracking Auth Hash](wi-fi/cracking-auth-hash.md)
+* [Attaccking WPS](wi-fi/attaccking-wps.md)
+* [Rogue Access Point](wi-fi/rogue-access-point.md)
