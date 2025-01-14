@@ -75,6 +75,7 @@
 ## 📃 Write Ups
 
 * [CRTP Lab](write-ups/crtp-lab.md)
+* [WiFi Challenge](write-ups/wifi-challenge.md)
 
 ## 🛜 Wi-Fi
 
