@@ -392,4 +392,4 @@ Once connected we get your MSCHAPv2 credentials so we need to crack the hash to 
 hashcat -a 0 -m 5500 hash ~/rockyou-top100000.txt --force
 ```
 
-juan.tr:bulldogs1234\
+CONTOSO\juan.tr:bulldogs1234\
