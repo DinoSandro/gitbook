@@ -89,3 +89,4 @@
 * [Attacking captive portals](wi-fi/attacking-captive-portals.md)
 * [Attacking WPA Enterprise](wi-fi/attacking-wpa-enterprise.md)
 * [Bettercap](wi-fi/bettercap.md)
+* [Manual Network Connections](wi-fi/manual-network-connections.md)
