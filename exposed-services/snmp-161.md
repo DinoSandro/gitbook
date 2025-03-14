@@ -23,3 +23,8 @@ snmp-check <IP> -c <Community String>
 ```
 
 <figure><img src="../.gitbook/assets/Pasted image 20230503161047.png" alt=""><figcaption></figcaption></figure>
+
+```
+snmpwalk -v 1 -c <Community String> <IP> NET-SNMP-EXTEND-MIB::nsExtendOutputFull
+```
+
