@@ -11,6 +11,7 @@
 * [SNMP 161](exposed-services/snmp-161.md)
 * [MSSQL](exposed-services/mssql.md)
 * [NFS 2049](exposed-services/nfs-2049.md)
+* [RPC](exposed-services/rpc.md)
 
 ## 🕸️ Web
 
