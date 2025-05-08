@@ -15,7 +15,8 @@
 
 ## 🕸️ Web
 
-* [TODO](web/todo.md)
+* [Server Side Attacks](web/server-side-attacks/README.md)
+  * [Authentication](web/server-side-attacks/authentication.md)
 
 ## 🪟 Windows
 
