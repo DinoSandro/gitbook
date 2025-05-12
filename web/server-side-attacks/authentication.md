@@ -10,5 +10,9 @@ While attempting to brute-force a login page, you should pay particular attentio
 * response error messages
 * response time
 
+### Bypass ip lock
 
+In some implementations, the counter for the number of failed attempts resets if the IP owner logs in successfully.
+
+Or use headers like `X-Forward` with a random number
 
