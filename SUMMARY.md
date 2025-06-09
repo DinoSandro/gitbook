@@ -17,6 +17,8 @@
 
 * [Server Side Attacks](web/server-side-attacks/README.md)
   * [Authentication](web/server-side-attacks/authentication.md)
+  * [Command Injection](web/server-side-attacks/command-injection.md)
+  * [File Upload](web/server-side-attacks/file-upload.md)
 
 ## 🪟 Windows
 
