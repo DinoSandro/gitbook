@@ -19,6 +19,8 @@
   * [Authentication](web/server-side-attacks/authentication.md)
   * [Command Injection](web/server-side-attacks/command-injection.md)
   * [File Upload](web/server-side-attacks/file-upload.md)
+  * [Race Conditions](web/server-side-attacks/race-conditions.md)
+  * [SSRF - Server Side Request Forgery](web/server-side-attacks/ssrf-server-side-request-forgery.md)
 
 ## 🪟 Windows
 

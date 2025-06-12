@@ -10,7 +10,7 @@ Let's take a moment to summarize our attack. We will be creating a rogue AP to m
 
 After putting our **wlan0** interface in monitor mode, we now have an interface called **wlan0mon**. We will identify the channel of the target AP and gather its ESSID and BSSID.
 
-<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 Let's return to our attack. Next, we will restart the capture on the same channel as the AP. This is similar to what we did when cracking WPA-PSK. We'll save the data to disk as Playtronics-01.cap.
 
@@ -22,7 +22,7 @@ We can now disable monitor mode by running **sudo airmon-ng stop wlan0mon**.
 
 We have to open the capture file with _Wireshark_ and locate the server certificate frame.
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 For each certificate, we right click and select _Export Packet Bytes_ to save the data into a file with a .der extension.
 

