@@ -1,3 +1,7 @@
+---
+description: https://portswigger.net/web-security/ssrf/url-validation-bypass-cheat-sheet
+---
+
 # SSRF - Server Side Request Forgery
 
 #### SSRF with blacklist-based input filters <a href="#ssrf-with-blacklist-based-input-filters" id="ssrf-with-blacklist-based-input-filters"></a>
