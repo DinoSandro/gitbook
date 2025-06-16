@@ -8,7 +8,7 @@ Consider a password reset mechanism that stores the user ID and reset token in t
 
 In this scenario, sending two parallel password reset requests from the same session, but with two different usernames, could potentially cause the following collision:
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 Note the final state when all operations are complete:
 

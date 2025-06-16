@@ -79,11 +79,6 @@
 
 * [TODO](linux/todo.md)
 
-## 📃 Write Ups
-
-* [CRTP Lab](write-ups/crtp-lab.md)
-* [WiFi Challenge](write-ups/wifi-challenge.md)
-
 ## 🛜 Wi-Fi
 
 * [Page 1](wi-fi/page-1.md)
@@ -97,3 +92,15 @@
 * [Attacking WPA Enterprise](wi-fi/attacking-wpa-enterprise.md)
 * [Bettercap](wi-fi/bettercap.md)
 * [Manual Network Connections](wi-fi/manual-network-connections.md)
+
+## 🚊 Binary Exploitation
+
+* [Tools and Misc](binary-exploitation/tools-and-misc/README.md)
+  * [Assembly](binary-exploitation/tools-and-misc/assembly.md)
+  * [Reversing assembly](binary-exploitation/tools-and-misc/reversing-assembly.md)
+  * [PWN-Tools](binary-exploitation/tools-and-misc/pwn-tools.md)
+
+## 📃 Write Ups
+
+* [CRTP Lab](write-ups/crtp-lab.md)
+* [WiFi Challenge](write-ups/wifi-challenge.md)
