@@ -134,3 +134,18 @@ target.sendline(payload)
 
 target.interactive()
 ```
+
+## Example 2&#x20;
+
+The input is first scanned into `name`, then into `password`. The format specifier is stored on the stack in the `fmt` variable. We can see in the assembly code that it is initialized to `%30s` (we have to convert the data to a char sequence):
+
+```
+        080485be c7 45 fb        MOV        dword ptr [EBP + fmt],"%30s"
+                 25 33 30 73
+```
+
+So both times by default it will let us scan in 30 characters. So we can see that `password` is stored at offset `-0x31`, `name` is stored at offset `-0x1d`, and `fmt` is stored at `-0x9`. The `password` char array can hold `0x31 - 0x1d = 0x14` bytes. The `name` char array can hold `0x1d - 0x9 = 0x14` bytes worth of data too. Since we can scan in `30` bytes worth of data, this gives us a 10 byte overflow in both cases.
+
+
+
+However with the first overflow (the one to `name`) we will be able to overwrite the value of `fmt`. This will allow us to specify how much data the second `scanf` call will scan. With that we will be able to scan in more than enough data to overwrite the saved return address, and get code execution when the `ret` instruction executes.

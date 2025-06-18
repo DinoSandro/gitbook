@@ -99,6 +99,8 @@
   * [Assembly](binary-exploitation/tools-and-misc/assembly.md)
   * [Reversing assembly](binary-exploitation/tools-and-misc/reversing-assembly.md)
   * [PWN-Tools](binary-exploitation/tools-and-misc/pwn-tools.md)
+  * [Defences](binary-exploitation/tools-and-misc/defences/README.md)
+    * [aslr/ pie](binary-exploitation/tools-and-misc/defences/aslr-pie.md)
 
 ***
 
