@@ -103,16 +103,17 @@
   * [PWN-Tools](binary-exploitation/tools-and-misc/pwn-tools.md)
   * [Defences](binary-exploitation/tools-and-misc/defences/README.md)
     * [aslr/ pie](binary-exploitation/tools-and-misc/defences/aslr-pie.md)
-
-***
-
-* [Buffer OverFlow](buffer-overflow/README.md)
-  * [Stack Based](buffer-overflow/stack-based/README.md)
-    * [Variables](buffer-overflow/stack-based/variables.md)
-    * [Call Function](buffer-overflow/stack-based/call-function.md)
-    * [Shellcode](buffer-overflow/stack-based/shellcode.md)
+* [Buffer OverFlow](binary-exploitation/buffer-overflow/README.md)
+  * [Stack Based](binary-exploitation/buffer-overflow/stack-based/README.md)
+    * [Variables](binary-exploitation/buffer-overflow/stack-based/variables.md)
+    * [Call Function](binary-exploitation/buffer-overflow/stack-based/call-function.md)
+    * [Shellcode](binary-exploitation/buffer-overflow/stack-based/shellcode.md)
 
 ## 📃 Write Ups
 
 * [CRTP Lab](write-ups/crtp-lab.md)
 * [WiFi Challenge](write-ups/wifi-challenge.md)
+
+## 🧠 AI
+
+* [Introduction](ai/introduction.md)
