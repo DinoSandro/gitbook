@@ -117,3 +117,4 @@
 ## 🧠 AI
 
 * [Introduction](ai/introduction.md)
+* [Prompt Engineering](ai/prompt-engineering.md)
