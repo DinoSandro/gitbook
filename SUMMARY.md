@@ -24,6 +24,7 @@
   * [XXE Injection](web/server-side-attacks/xxe-injection.md)
 * [Client Side Attack](web/client-side-attack/README.md)
   * [WebSocket](web/client-side-attack/websocket.md)
+  * [CSRF](web/client-side-attack/csrf.md)
 
 ## 🪟 Windows
 
