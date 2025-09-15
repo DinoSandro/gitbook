@@ -22,6 +22,7 @@
   * [Race Conditions](web/server-side-attacks/race-conditions.md)
   * [SSRF - Server Side Request Forgery](web/server-side-attacks/ssrf-server-side-request-forgery.md)
   * [XXE Injection](web/server-side-attacks/xxe-injection.md)
+  * [HTTP Smuggling](web/server-side-attacks/http-smuggling.md)
 * [Client Side Attack](web/client-side-attack/README.md)
   * [WebSocket](web/client-side-attack/websocket.md)
   * [CSRF](web/client-side-attack/csrf.md)
